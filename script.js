@@ -9,15 +9,15 @@ let query;
 async function search(keyword) {
     console.log("searching")
     try {
-        const url=`https://wallhaven.cc/api/v1/search?q=${keyword}&apikey=${apiKey}`
-        //&apikey=${apiKey}${keyword}&page=
+        const url=`https://wallhaven.cc/api/v1/search?q=${keyword}&page=${page}&apikey=${apiKey}`
+        
         console.log(url)
         // const result = await fetch(`https://wallhaven.cc/api/v1/search?q=${keyword}&apikey=${apiKey}`)
-        const inside=encodeURIComponent(url)
-        const result = await fetch(`${url}`);
+        // const inside=encodeURIComponent(url)
+        const result = await fetch(url);
         const data=await result.json();
         console.log(data)
-        const dataParsed = JSON.parse(data.contents);
+        // const dataParsed = JSON.parse(data.contents);
         // console.log(data)
         displayImages(data);
     } catch (error) {
@@ -40,11 +40,15 @@ function displayImages(imgObj){
     
     imgObj.data.map((image)=>{
         let container=document.createElement("div")
-        container.classList.add("img-container")
         let img=document.createElement("img")
+        let link=document.createElement("a")
+        link.href=image.path
+        container.classList.add("img-container")
         console.log(1);
-        img.src=image.path
-        container.appendChild(img)
+        // img.crossOrigin = "anonymous"
+        img.src=image.thumbs.large;
+        link.appendChild(img)
+        container.appendChild(link)
         imageSection.appendChild(container)
     })
     showMoreBtn.style.display="block";
